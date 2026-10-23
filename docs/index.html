@@ -147,10 +147,11 @@ td:first-child { font-family: var(--mono); white-space: nowrap; }
 
 .steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 1.25rem; max-width: 46rem; }
 .steps > li { counter-increment: s; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: 0.2rem 0.9rem; }
-.steps > li::before { content: counter(s); grid-row: span 2; font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.2; color: var(--wet); }
+.steps > li::before { content: counter(s); grid-column: 1; grid-row: 1 / span 3; align-self: start; font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.2; color: var(--wet); }
+.steps > li > * { grid-column: 2; min-width: 0; }
 .steps h3 { font-size: 1.05rem; }
 .cmd { display: flex; align-items: stretch; background: var(--code-bg); border-radius: 8px; margin-top: 0.4rem; min-width: 0; }
-.cmd pre { margin: 0; padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.88rem; overflow-x: auto; flex: 1; min-width: 0; }
+.cmd pre { margin: 0; padding: 0.7rem 1rem; font-family: var(--mono); font-size: 0.88rem; flex: 1; min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .copy { font: 500 0.82rem var(--body); background: none; border: 0; border-left: 1px solid var(--line); color: var(--ink); padding: 0 0.9rem; cursor: pointer; min-width: 4.6rem; }
 .copy:hover { color: var(--wet); }
 
