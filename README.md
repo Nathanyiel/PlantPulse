@@ -1,13 +1,13 @@
-# 🌱 Plant Moisture Monitor
+# 🌱 PlantPulse
 
 **Never forget to water your plants again.** A Raspberry Pi, six resistors and one LED tell you when the soil is dry.
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-2f7f5f.svg)](LICENSE)
 ![Python 3](https://img.shields.io/badge/python-3-1d6ba3.svg)
 ![Raspberry Pi](https://img.shields.io/badge/runs%20on-Raspberry%20Pi-b05e14.svg)
-[![Live guide](https://img.shields.io/badge/live%20guide-open%20in%20browser-b05e14.svg)](https://nathanyiel.github.io/Raspberry-Pi_Moisture_Sensor/)
+[![Live guide](https://img.shields.io/badge/live%20guide-open%20in%20browser-b05e14.svg)](https://nathanyiel.github.io/plantpulse/)
 
-[![Preview of the interactive guide: moving the soil slider switches the circuit between wet and dry](assets/preview.gif)](https://nathanyiel.github.io/Raspberry-Pi_Moisture_Sensor/)
+[![Preview of the interactive guide: moving the soil slider switches the circuit between wet and dry](assets/preview.gif)](https://nathanyiel.github.io/plantpulse/)
 
 *Click the preview to open the interactive guide in your browser.*
 
@@ -90,8 +90,8 @@ Copy this whole block into a terminal. It installs the library, downloads the pr
 
 ```bash
 sudo apt update && sudo apt install -y python3-rpi.gpio
-git clone https://github.com/Nathanyiel/Raspberry-Pi_Moisture_Sensor.git
-cd Raspberry-Pi_Moisture_Sensor
+git clone https://github.com/Nathanyiel/plantpulse.git
+cd plantpulse
 python3 moisture_sensor.py
 ```
 
@@ -104,7 +104,7 @@ sudo apt update && sudo apt install -y python3-rpi-lgpio
 **No git?** Download only the script:
 
 ```bash
-curl -O https://raw.githubusercontent.com/Nathanyiel/Raspberry-Pi_Moisture_Sensor/main/moisture_sensor.py
+curl -O https://raw.githubusercontent.com/Nathanyiel/plantpulse/main/moisture_sensor.py
 python3 moisture_sensor.py
 ```
 
