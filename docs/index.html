@@ -52,9 +52,6 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 [hidden] { display: none !important; }
-:root:not([data-lang]) [lang="de"] { display: none; }
-:root[data-lang="de"] [lang="en"] { display: none; }
-:root[data-lang="en"] [lang="de"] { display: none; }
 
 .wrap { max-width: 68rem; margin-inline: auto; }
 a { color: var(--wet); text-underline-offset: 3px; }
@@ -76,9 +73,6 @@ code, kbd { font-family: var(--mono); font-size: 0.9em; }
 .bar nav { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; font-size: 0.95rem; }
 .bar nav a { color: var(--ink); text-decoration: none; }
 .bar nav a:hover { color: var(--wet); }
-.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; background: var(--surface); }
-.seg button { font: 500 0.85rem var(--body); color: var(--muted); background: none; border: 0; padding: 0.3rem 0.8rem; border-radius: 999px; cursor: pointer; min-height: 32px; }
-.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 
 /* hero */
 .hero { padding-block: 2.5rem 3rem; display: grid; gap: 1.25rem; }
@@ -200,24 +194,20 @@ footer p { max-width: 42rem; }
 <header class="bar">
   <span class="name">Raspberry-Pi Moisture Sensor</span>
   <nav aria-label="Page">
-    <a href="#how"><span lang="en">How it works</span><span lang="de">Funktion</span></a>
-    <a href="#wiring"><span lang="en">Wiring</span><span lang="de">Verdrahtung</span></a>
-    <a href="#setup"><span lang="en">Run it</span><span lang="de">Starten</span></a>
-    <a href="#code"><span lang="en">Code</span><span lang="de">Code</span></a>
+    <a href="#how">How it works</a>
+    <a href="#wiring">Wiring</a>
+    <a href="#setup">Run it</a>
+    <a href="#code">Code</a>
     <a href="https://github.com/Nathanyiel/Raspberry-Pi_Moisture_Sensor">GitHub</a>
-    <span class="seg" role="group" aria-label="Language">
-      <button type="button" data-setlang="en" aria-pressed="true">EN</button>
-      <button type="button" data-setlang="de" aria-pressed="false">DE</button>
-    </span>
   </nav>
 </header>
 
 <main>
 <div class="hero">
-  <h1><span lang="en">Does your plant need water?</span><span lang="de">Braucht deine Pflanze Wasser?</span></h1>
+  <h1>Does your plant need water?</h1>
   <p class="lead">
-    <span lang="en">A Raspberry Pi, six resistors and one LED answer that. Drag the slider to change how wet the soil is and watch the circuit decide.</span>
-    <span lang="de">Ein Raspberry Pi, sechs Widerstände und eine LED geben die Antwort. Zieh am Regler, ändere die Bodenfeuchte und sieh zu, wie die Schaltung entscheidet.</span>
+    A Raspberry Pi, six resistors and one LED answer that. Drag the slider to change how wet the soil is and watch the circuit decide.
+    
   </p>
 
   <div class="sim">
@@ -271,156 +261,156 @@ footer p { max-width: 42rem; }
     </div>
     <div class="panel">
       <div>
-        <p class="verdict" id="verdict" aria-live="polite"><span lang="en"></span><span lang="de"></span></p>
-        <p class="sub" id="why"><span lang="en"></span><span lang="de"></span></p>
+        <p class="verdict" id="verdict" aria-live="polite"></p>
+        <p class="sub" id="why"></p>
       </div>
 
       <div class="field">
         <label for="soil">
-          <span><span lang="en">Soil resistance</span><span lang="de">Widerstand der Erde</span></span>
+          <span>Soil resistance</span>
           <output id="rOut" for="soil">120 kΩ</output>
         </label>
         <input type="range" id="soil" min="0" max="100" step="1" value="62">
         <div class="presets" role="group" aria-label="Examples">
-          <button type="button" class="chip" data-r="2"><span lang="en">Glass of water</span><span lang="de">Glas Wasser</span></button>
-          <button type="button" class="chip" data-r="15"><span lang="en">Wet soil</span><span lang="de">Feuchte Erde</span></button>
-          <button type="button" class="chip" data-r="33"><span lang="en">Almost dry</span><span lang="de">Fast trocken</span></button>
-          <button type="button" class="chip" data-r="120"><span lang="en">Dry soil</span><span lang="de">Trockene Erde</span></button>
-          <button type="button" class="chip" data-r="500"><span lang="en">Air</span><span lang="de">Luft</span></button>
+          <button type="button" class="chip" data-r="2">Glass of water</button>
+          <button type="button" class="chip" data-r="15">Wet soil</button>
+          <button type="button" class="chip" data-r="33">Almost dry</button>
+          <button type="button" class="chip" data-r="120">Dry soil</button>
+          <button type="button" class="chip" data-r="500">Air</button>
         </div>
       </div>
 
       <div>
-        <div class="field"><label style="margin-bottom:0"><span><span lang="en">Voltage at GPIO 17</span><span lang="de">Spannung an GPIO 17</span></span><output id="vOut">2.07 V</output></label></div>
+        <div class="field"><label style="margin-bottom:0"><span>Voltage at GPIO 17</span><output id="vOut">2.07 V</output></label></div>
         <div class="gauge" id="gauge"><i id="gaugeFill"></i><b></b></div>
-        <div class="gauge-labels"><span>0 V</span><span><span lang="en">switches at about 1.65 V</span><span lang="de">kippt bei etwa 1,65 V</span></span><span>3.3 V</span></div>
+        <div class="gauge-labels"><span>0 V</span><span>switches at about 1.65 V</span><span>3.3 V</span></div>
       </div>
 
       <div class="term" aria-label="Simulated output">
-        <div class="cap"><span lang="en">Output of feuchtigkeits_sensor.py, next reading in</span><span lang="de">Ausgabe von feuchtigkeits_sensor.py, nächste Messung in</span> <span id="cd">2</span> s</div>
+        <div class="cap">Output of feuchtigkeits_sensor.py, next reading in <span id="cd">2</span> s</div>
         <div id="term"></div>
       </div>
-      <p class="fine"><span lang="en">Simulation with example resistances. Real soil varies with moisture, minerals and probe distance.</span><span lang="de">Simulation mit Beispielwerten. Echte Erde schwankt je nach Feuchte, Mineralien und Abstand der Sonden.</span></p>
+      <p class="fine">Simulation with example resistances. Real soil varies with moisture, minerals and probe distance.</p>
     </div>
   </div>
 </div>
 
 <section id="how">
   <div class="head">
-    <h2><span lang="en">How it works</span><span lang="de">So funktioniert es</span></h2>
-    <p class="measure"><span lang="en">Wet soil conducts electricity, dry soil hardly does. The Pi turns that into a yes or no with a voltage divider and one digital input. No extra chip needed.</span><span lang="de">Feuchte Erde leitet Strom, trockene kaum. Der Pi macht daraus mit einem Spannungsteiler und einem digitalen Eingang ein Ja oder Nein. Ein zusätzlicher Chip ist nicht nötig.</span></p>
+    <h2>How it works</h2>
+    <p class="measure">Wet soil conducts electricity, dry soil hardly does. The Pi turns that into a yes or no with a voltage divider and one digital input. No extra chip needed.</p>
   </div>
   <ol class="loop">
     <li>
-      <h3><span lang="en">Pulse</span><span lang="de">Impuls</span></h3>
-      <p><span lang="en">GPIO 4 goes HIGH for 10 ms and powers the divider. The rest of the time the probes get no current, which slows corrosion.</span><span lang="de">GPIO 4 geht für 10 ms auf HIGH und versorgt den Spannungsteiler. Die restliche Zeit fließt kein Strom durch die Sonden, das bremst die Korrosion.</span></p>
+      <h3>Pulse</h3>
+      <p>GPIO 4 goes HIGH for 10 ms and powers the divider. The rest of the time the probes get no current, which slows corrosion.</p>
     </li>
     <li>
-      <h3><span lang="en">Read</span><span lang="de">Messen</span></h3>
-      <p><span lang="en">GPIO 17 reads the node between the resistors and the soil. Wet soil pulls it down to LOW. Dry soil lets it stay HIGH.</span><span lang="de">GPIO 17 liest den Knoten zwischen Widerständen und Erde. Feuchte Erde zieht ihn auf LOW, trockene Erde lässt ihn auf HIGH.</span></p>
+      <h3>Read</h3>
+      <p>GPIO 17 reads the node between the resistors and the soil. Wet soil pulls it down to LOW. Dry soil lets it stay HIGH.</p>
     </li>
     <li>
-      <h3><span lang="en">React</span><span lang="de">Reagieren</span></h3>
-      <p><span lang="en">Dry: the LED lights up and the console prints “Trocken”. Wet: the LED stays off. Then the Pi waits two seconds.</span><span lang="de">Trocken: Die LED leuchtet und die Konsole meldet „Trocken“. Feucht: Die LED bleibt aus. Dann wartet der Pi zwei Sekunden.</span></p>
+      <h3>React</h3>
+      <p>Dry: the LED lights up and the console prints “Dry”. Wet: the LED stays off. Then the Pi waits two seconds.</p>
     </li>
   </ol>
-  <p class="loop-end"><span lang="en">Then it starts again at step 1, until you press Ctrl+C.</span><span lang="de">Danach beginnt es wieder bei Schritt 1, bis du Strg+C drückst.</span></p>
+  <p class="loop-end">Then it starts again at step 1, until you press Ctrl+C.</p>
 </section>
 
 <section id="parts">
   <div class="head">
-    <h2><span lang="en">What you need</span><span lang="de">Das brauchst du</span></h2>
-    <p class="measure"><span lang="en">Everything fits on a breadboard. Tick off what you already have.</span><span lang="de">Alles passt auf ein Steckbrett. Hak ab, was du schon hast.</span></p>
+    <h2>What you need</h2>
+    <p class="measure">Everything fits on a breadboard. Tick off what you already have.</p>
   </div>
   <div>
     <ul class="parts">
-      <li><label><input type="checkbox"><span class="what"><span lang="en">Raspberry Pi</span><span lang="de">Raspberry Pi</span><small><span lang="en">Any model with the 40-pin header. The schematic was drawn for a Pi 2 B.</span><span lang="de">Jedes Modell mit 40-Pin-Leiste. Der Schaltplan wurde für einen Pi 2 B gezeichnet.</span></small></span><span class="qty">1×</span></label></li>
-      <li><label><input type="checkbox"><span class="what"><span lang="en">330 Ω resistor, for the divider</span><span lang="de">330-Ω-Widerstand, für den Spannungsteiler</span></span><span class="qty">3×</span></label></li>
-      <li><label><input type="checkbox"><span class="what"><span lang="en">10 kΩ resistor, for the divider</span><span lang="de">10-kΩ-Widerstand, für den Spannungsteiler</span></span><span class="qty">2×</span></label></li>
-      <li><label><input type="checkbox"><span class="what"><span lang="en">330 Ω resistor, in series with the LED</span><span lang="de">330-Ω-Widerstand, als Vorwiderstand der LED</span></span><span class="qty">1×</span></label></li>
-      <li><label><input type="checkbox"><span class="what"><span lang="en">LED</span><span lang="de">LED</span></span><span class="qty">1×</span></label></li>
-      <li><label><input type="checkbox"><span class="what"><span lang="en">Two metal probes</span><span lang="de">Zwei Metallsonden</span><small><span lang="en">For example two nails or screws, or two wires with stripped ends.</span><span lang="de">Zum Beispiel zwei Nägel oder Schrauben, oder zwei Kabel mit abisolierten Enden.</span></small></span><span class="qty">2×</span></label></li>
-      <li><label><input type="checkbox"><span class="what"><span lang="en">Jumper wires, optional breadboard</span><span lang="de">Jumper-Kabel, optional Steckbrett</span></span><span class="qty"></span></label></li>
+      <li><label><input type="checkbox"><span class="what">Raspberry Pi<small>Any model with the 40-pin header. The schematic was drawn for a Pi 2 B.</small></span><span class="qty">1×</span></label></li>
+      <li><label><input type="checkbox"><span class="what">330 Ω resistor, for the divider</span><span class="qty">3×</span></label></li>
+      <li><label><input type="checkbox"><span class="what">10 kΩ resistor, for the divider</span><span class="qty">2×</span></label></li>
+      <li><label><input type="checkbox"><span class="what">330 Ω resistor, in series with the LED</span><span class="qty">1×</span></label></li>
+      <li><label><input type="checkbox"><span class="what">LED</span><span class="qty">1×</span></label></li>
+      <li><label><input type="checkbox"><span class="what">Two metal probes<small>For example two nails or screws, or two wires with stripped ends.</small></span><span class="qty">2×</span></label></li>
+      <li><label><input type="checkbox"><span class="what">Jumper wires, optional breadboard</span><span class="qty"></span></label></li>
     </ul>
-    <p class="progress"><span lang="en"><b class="pn">0</b> of 7 ready</span><span lang="de"><b class="pn">0</b> von 7 vorhanden</span></p>
+    <p class="progress"><b class="pn">0</b> of 7 ready</p>
   </div>
 </section>
 
 <section id="wiring">
   <div class="head">
-    <h2><span lang="en">Wiring</span><span lang="de">Verdrahtung</span></h2>
-    <p class="measure"><span lang="en">The diagram above shows the whole circuit. This table lists every connection. The measuring node is the point where the resistor chain, GPIO 17 and the first soil probe meet.</span><span lang="de">Der Schaltplan oben zeigt die ganze Schaltung. Die Tabelle listet jede Verbindung. Der Messknoten ist der Punkt, an dem Widerstandskette, GPIO 17 und die erste Bodensonde zusammenkommen.</span></p>
+    <h2>Wiring</h2>
+    <p class="measure">The diagram above shows the whole circuit. This table lists every connection. The measuring node is the point where the resistor chain, GPIO 17 and the first soil probe meet.</p>
   </div>
   <div class="tablebox">
     <table>
       <thead>
         <tr>
-          <th><span lang="en">Pin</span><span lang="de">Pin</span></th>
-          <th><span lang="en">GPIO (BCM)</span><span lang="de">GPIO (BCM)</span></th>
-          <th><span lang="en">Job</span><span lang="de">Aufgabe</span></th>
-          <th><span lang="en">Connects to</span><span lang="de">Verbunden mit</span></th>
+          <th>Pin</th>
+          <th>GPIO (BCM)</th>
+          <th>Job</th>
+          <th>Connects to</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>7</td><td>GPIO 4</td><td><span lang="en">Supply pulse</span><span lang="de">Versorgungsimpuls</span></td><td><span lang="en">Chain of 3 × 330 Ω and 2 × 10 kΩ in series, ending at the measuring node</span><span lang="de">Reihenschaltung aus 3 × 330 Ω und 2 × 10 kΩ, endet am Messknoten</span></td></tr>
-        <tr><td>11</td><td>GPIO 17</td><td><span lang="en">Reads the node</span><span lang="de">Liest den Knoten</span></td><td><span lang="en">Measuring node, directly</span><span lang="de">Messknoten, direkt</span></td></tr>
-        <tr><td>13</td><td>GPIO 27</td><td><span lang="en">LED</span><span lang="de">LED</span></td><td><span lang="en">330 Ω, then the LED’s long leg. The short leg goes to GND.</span><span lang="de">330 Ω, dann das lange Bein der LED. Das kurze Bein geht an GND.</span></td></tr>
-        <tr><td>6, 9, …</td><td>GND</td><td><span lang="en">Return path</span><span lang="de">Rückleiter</span></td><td><span lang="en">Second soil probe and the LED’s short leg</span><span lang="de">Zweite Bodensonde und kurzes Bein der LED</span></td></tr>
+        <tr><td>7</td><td>GPIO 4</td><td>Supply pulse</td><td>Chain of 3 × 330 Ω and 2 × 10 kΩ in series, ending at the measuring node</td></tr>
+        <tr><td>11</td><td>GPIO 17</td><td>Reads the node</td><td>Measuring node, directly</td></tr>
+        <tr><td>13</td><td>GPIO 27</td><td>LED</td><td>330 Ω, then the LED’s long leg. The short leg goes to GND.</td></tr>
+        <tr><td>6, 9, …</td><td>GND</td><td>Return path</td><td>Second soil probe and the LED’s short leg</td></tr>
       </tbody>
     </table>
   </div>
   <div class="two">
     <div class="math">
-      <h3><span lang="en">Why these resistors?</span><span lang="de">Warum diese Widerstände?</span></h3>
+      <h3>Why these resistors?</h3>
       <p class="eq">R<sub>top</sub> = 3 × 330 Ω + 2 × 10 kΩ ≈ 21 kΩ</p>
-      <p><span lang="en">The chain is the upper half of a voltage divider and the soil is the lower half. The Pi’s internal pull-down (about 50 kΩ) sits in parallel with the soil. GPIO 17 flips from LOW to HIGH when the soil is around 36 kΩ.</span><span lang="de">Die Kette ist die obere Hälfte eines Spannungsteilers, die Erde die untere. Der interne Pull-down des Pi (etwa 50 kΩ) liegt parallel zur Erde. GPIO 17 kippt von LOW auf HIGH, wenn die Erde bei etwa 36 kΩ liegt.</span></p>
-      <p class="fine"><span lang="en">The switching point of a real input varies a little from Pi to Pi, so treat 36 kΩ as an estimate.</span><span lang="de">Der Schaltpunkt eines echten Eingangs schwankt etwas von Pi zu Pi, nimm die 36 kΩ als Schätzwert.</span></p>
+      <p>The chain is the upper half of a voltage divider and the soil is the lower half. The Pi’s internal pull-down (about 50 kΩ) sits in parallel with the soil. GPIO 17 flips from LOW to HIGH when the soil is around 36 kΩ.</p>
+      <p class="fine">The switching point of a real input varies a little from Pi to Pi, so treat 36 kΩ as an estimate.</p>
     </div>
-    <p class="callout"><span lang="en">Check the LED direction first if nothing lights up. The long leg points toward the resistor and GPIO 27. Always keep the 330 Ω resistor in the LED branch, or the LED draws too much current from the pin.</span><span lang="de">Prüfe zuerst die Richtung der LED, falls nichts leuchtet. Das lange Bein zeigt zum Widerstand und zu GPIO 27. Lass den 330-Ω-Widerstand im LED-Zweig immer drin, sonst zieht die LED zu viel Strom aus dem Pin.</span></p>
+    <p class="callout">Check the LED direction first if nothing lights up. The long leg points toward the resistor and GPIO 27. Always keep the 330 Ω resistor in the LED branch, or the LED draws too much current from the pin.</p>
   </div>
 </section>
 
 <section id="setup">
   <div class="head">
-    <h2><span lang="en">Run it</span><span lang="de">Starten</span></h2>
-    <p class="measure"><span lang="en">Do this on the Raspberry Pi. On Windows or macOS you can edit the script, but the GPIO library only runs on a Pi. Use the simulator above to try the logic anywhere.</span><span lang="de">Mach das auf dem Raspberry Pi. Unter Windows oder macOS kannst du das Skript bearbeiten, aber die GPIO-Bibliothek läuft nur auf einem Pi. Die Simulation oben zeigt dir die Logik überall.</span></p>
+    <h2>Run it</h2>
+    <p class="measure">Do this on the Raspberry Pi. On Windows or macOS you can edit the script, but the GPIO library only runs on a Pi. Use the simulator above to try the logic anywhere.</p>
   </div>
   <ol class="steps">
     <li>
-      <h3><span lang="en">Open a terminal</span><span lang="de">Terminal öffnen</span></h3>
-      <p><span lang="en">Press Ctrl+Alt+T, or use the menu under Accessories.</span><span lang="de">Drücke Strg+Alt+T oder nutze das Menü unter Zubehör.</span></p>
+      <h3>Open a terminal</h3>
+      <p>Press Ctrl+Alt+T, or use the menu under Accessories.</p>
     </li>
     <li>
-      <h3><span lang="en">Install the GPIO library</span><span lang="de">GPIO-Bibliothek installieren</span></h3>
-      <p><span lang="en">Raspberry Pi OS usually has it already. On a Pi 5 install <code>python3-rpi-lgpio</code> instead, it is a drop-in replacement.</span><span lang="de">Raspberry Pi OS bringt sie meist schon mit. Auf einem Pi 5 installierst du stattdessen <code>python3-rpi-lgpio</code>, das ist ein direkter Ersatz.</span></p>
+      <h3>Install the GPIO library</h3>
+      <p>Raspberry Pi OS usually has it already. On a Pi 5 install <code>python3-rpi-lgpio</code> instead, it is a drop-in replacement.</p>
       <div class="cmd"><pre>sudo apt update
-sudo apt install python3-rpi.gpio</pre><button type="button" class="copy"><span class="s1"><span lang="en">Copy</span><span lang="de">Kopieren</span></span><span class="s2" hidden><span lang="en">Copied</span><span lang="de">Kopiert</span></span></button></div>
+sudo apt install python3-rpi.gpio</pre><button type="button" class="copy"><span class="s1">Copy</span><span class="s2" hidden>Copied</span></button></div>
     </li>
     <li>
-      <h3><span lang="en">Get the code</span><span lang="de">Code holen</span></h3>
+      <h3>Get the code</h3>
       <div class="cmd"><pre>git clone https://github.com/Nathanyiel/Raspberry-Pi_Moisture_Sensor.git
-cd Raspberry-Pi_Moisture_Sensor</pre><button type="button" class="copy"><span class="s1"><span lang="en">Copy</span><span lang="de">Kopieren</span></span><span class="s2" hidden><span lang="en">Copied</span><span lang="de">Kopiert</span></span></button></div>
+cd Raspberry-Pi_Moisture_Sensor</pre><button type="button" class="copy"><span class="s1">Copy</span><span class="s2" hidden>Copied</span></button></div>
     </li>
     <li>
-      <h3><span lang="en">Start the sensor</span><span lang="de">Sensor starten</span></h3>
-      <p><span lang="en">Push the probes into the soil. Press Ctrl+C to stop.</span><span lang="de">Steck die Sonden in die Erde. Mit Strg+C beendest du das Programm.</span></p>
-      <div class="cmd"><pre>python3 feuchtigkeits_sensor.py</pre><button type="button" class="copy"><span class="s1"><span lang="en">Copy</span><span lang="de">Kopieren</span></span><span class="s2" hidden><span lang="en">Copied</span><span lang="de">Kopiert</span></span></button></div>
+      <h3>Start the sensor</h3>
+      <p>Push the probes into the soil. Press Ctrl+C to stop.</p>
+      <div class="cmd"><pre>python3 feuchtigkeits_sensor.py</pre><button type="button" class="copy"><span class="s1">Copy</span><span class="s2" hidden>Copied</span></button></div>
     </li>
   </ol>
 </section>
 
 <section id="code">
   <div class="head">
-    <h2><span lang="en">The code, piece by piece</span><span lang="de">Der Code, Stück für Stück</span></h2>
-    <p class="measure"><span lang="en">The whole script is about 30 lines. Pick a part to see what it does. Comments are trimmed here.</span><span lang="de">Das ganze Skript hat rund 30 Zeilen. Wähl einen Teil, um zu sehen, was er macht. Kommentare sind hier gekürzt.</span></p>
+    <h2>The code, piece by piece</h2>
+    <p class="measure">The whole script is about 30 lines. Pick a part to see what it does. Comments are trimmed here.</p>
   </div>
   <div class="walk">
     <div>
       <div class="tabs" role="group" aria-label="Code parts">
-        <button type="button" class="chip" data-g="pins" aria-pressed="false"><span lang="en">Pins</span><span lang="de">Pins</span></button>
-        <button type="button" class="chip" data-g="setup" aria-pressed="false"><span lang="en">Setup</span><span lang="de">Einrichten</span></button>
-        <button type="button" class="chip" data-g="measure" aria-pressed="true"><span lang="en">One measurement</span><span lang="de">Eine Messung</span></button>
-        <button type="button" class="chip" data-g="loop" aria-pressed="false"><span lang="en">Main loop</span><span lang="de">Hauptschleife</span></button>
+        <button type="button" class="chip" data-g="pins" aria-pressed="false">Pins</button>
+        <button type="button" class="chip" data-g="setup" aria-pressed="false">Setup</button>
+        <button type="button" class="chip" data-g="measure" aria-pressed="true">One measurement</button>
+        <button type="button" class="chip" data-g="loop" aria-pressed="false">Main loop</button>
       </div>
       <div class="code"><pre><code><span class="ln" data-g="pins">import RPi.GPIO as GPIO</span>
 <span class="ln" data-g="pins">import time</span>
@@ -447,30 +437,30 @@ cd Raspberry-Pi_Moisture_Sensor</pre><button type="button" class="copy"><span cl
 <span class="ln" data-g="loop">        v = measure_once(10)</span>
 <span class="ln" data-g="loop">        if v == 0:</span>
 <span class="ln" data-g="loop">            GPIO.output(GPIO_LED, GPIO.LOW)</span>
-<span class="ln" data-g="loop">            print("Feucht (GPIO_IN LOW)")</span>
+<span class="ln" data-g="loop">            print("Wet (GPIO_IN LOW)")</span>
 <span class="ln" data-g="loop">        else:</span>
 <span class="ln" data-g="loop">            GPIO.output(GPIO_LED, GPIO.HIGH)</span>
-<span class="ln" data-g="loop">            print("Trocken (GPIO_IN HIGH)")</span>
+<span class="ln" data-g="loop">            print("Dry (GPIO_IN HIGH)")</span>
 <span class="ln" data-g="loop">        time.sleep(2.0)</span>
 <span class="ln" data-g="loop">finally:</span>
 <span class="ln" data-g="loop">    GPIO.cleanup()</span></code></pre></div>
     </div>
     <div>
       <div class="explain" data-for="pins" hidden>
-        <h3><span lang="en">Pins</span><span lang="de">Pins</span></h3>
-        <p><span lang="en">The script uses BCM numbering, so these are GPIO numbers and not the physical pin numbers. GPIO 4 sends the supply pulse, GPIO 17 reads the measuring node and GPIO 27 drives the LED.</span><span lang="de">Das Skript nutzt die BCM-Nummerierung, es sind also GPIO-Nummern und nicht die physischen Pin-Nummern. GPIO 4 sendet den Versorgungsimpuls, GPIO 17 liest den Messknoten und GPIO 27 steuert die LED.</span></p>
+        <h3>Pins</h3>
+        <p>The script uses BCM numbering, so these are GPIO numbers and not the physical pin numbers. GPIO 4 sends the supply pulse, GPIO 17 reads the measuring node and GPIO 27 drives the LED.</p>
       </div>
       <div class="explain" data-for="setup" hidden>
-        <h3><span lang="en">Setup</span><span lang="de">Einrichten</span></h3>
-        <p><span lang="en">GPIO 4 and 27 are outputs and start LOW. GPIO 17 is an input with an internal pull-down, so it reads LOW unless the divider pushes it high.</span><span lang="de">GPIO 4 und 27 sind Ausgänge und starten auf LOW. GPIO 17 ist ein Eingang mit internem Pull-down und liest LOW, solange der Spannungsteiler ihn nicht nach oben zieht.</span></p>
+        <h3>Setup</h3>
+        <p>GPIO 4 and 27 are outputs and start LOW. GPIO 17 is an input with an internal pull-down, so it reads LOW unless the divider pushes it high.</p>
       </div>
       <div class="explain" data-for="measure">
-        <h3><span lang="en">One measurement</span><span lang="de">Eine Messung</span></h3>
-        <p><span lang="en">Switch the divider on, wait 10 ms, read GPIO 17, switch the divider off. The function returns 0 for LOW (wet) or 1 for HIGH (dry). Keeping the current on for only a moment slows down corrosion on the probes.</span><span lang="de">Spannungsteiler einschalten, 10 ms warten, GPIO 17 lesen, Spannungsteiler ausschalten. Die Funktion gibt 0 für LOW (feucht) oder 1 für HIGH (trocken) zurück. Der Strom fließt nur kurz, das bremst die Korrosion an den Sonden.</span></p>
+        <h3>One measurement</h3>
+        <p>Switch the divider on, wait 10 ms, read GPIO 17, switch the divider off. The function returns 0 for LOW (wet) or 1 for HIGH (dry). Keeping the current on for only a moment slows down corrosion on the probes.</p>
       </div>
       <div class="explain" data-for="loop" hidden>
-        <h3><span lang="en">Main loop</span><span lang="de">Hauptschleife</span></h3>
-        <p><span lang="en">Measure, then react: LOW means wet, so the LED goes off. HIGH means dry, so the LED goes on as a warning. Both cases print a line. The Pi waits two seconds and repeats. Ctrl+C ends the loop and <code>GPIO.cleanup()</code> resets the pins.</span><span lang="de">Messen, dann reagieren: LOW heißt feucht, die LED geht aus. HIGH heißt trocken, die LED geht als Warnung an. In beiden Fällen wird eine Zeile ausgegeben. Der Pi wartet zwei Sekunden und wiederholt. Strg+C beendet die Schleife und <code>GPIO.cleanup()</code> setzt die Pins zurück.</span></p>
+        <h3>Main loop</h3>
+        <p>Measure, then react: LOW means wet, so the LED goes off. HIGH means dry, so the LED goes on as a warning. Both cases print a line. The Pi waits two seconds and repeats. Ctrl+C ends the loop and <code>GPIO.cleanup()</code> resets the pins.</p>
       </div>
     </div>
   </div>
@@ -478,23 +468,23 @@ cd Raspberry-Pi_Moisture_Sensor</pre><button type="button" class="copy"><span cl
 
 <section id="ideas">
   <div class="head">
-    <h2><span lang="en">Take it further</span><span lang="de">Bau es weiter aus</span></h2>
-    <p class="measure"><span lang="en">The project is small on purpose. Here are some next steps if you want to build on it.</span><span lang="de">Das Projekt ist absichtlich klein. Hier sind ein paar Ideen, wenn du darauf aufbauen willst.</span></p>
+    <h2>Take it further</h2>
+    <p class="measure">The project is small on purpose. Here are some next steps if you want to build on it.</p>
   </div>
   <ul class="ideas">
-    <li><b><span lang="en">Log the readings</span><span lang="de">Messwerte protokollieren</span></b><span><span lang="en">Write a timestamp and the reading to a CSV file and plot how fast your plant dries out.</span><span lang="de">Schreib Zeitstempel und Messwert in eine CSV-Datei und zeichne, wie schnell deine Pflanze austrocknet.</span></span></li>
-    <li><b><span lang="en">Get a message</span><span lang="de">Nachricht bekommen</span></b><span><span lang="en">Send a push message or email when the soil has been dry for a few readings in a row.</span><span lang="de">Schick eine Push-Nachricht oder E-Mail, wenn die Erde mehrere Messungen hintereinander trocken war.</span></span></li>
-    <li><b><span lang="en">Measure real values</span><span lang="de">Echte Werte messen</span></b><span><span lang="en">Add an analog-to-digital converter such as the MCP3008 to get a percentage instead of wet or dry.</span><span lang="de">Ergänze einen Analog-Digital-Wandler wie den MCP3008, um einen Prozentwert statt feucht oder trocken zu bekommen.</span></span></li>
-    <li><b><span lang="en">Water automatically</span><span lang="de">Automatisch gießen</span></b><span><span lang="en">Drive a small pump through a relay or transistor when the soil is dry.</span><span lang="de">Steuer eine kleine Pumpe über ein Relais oder einen Transistor, wenn die Erde trocken ist.</span></span></li>
-    <li><b><span lang="en">Start on boot</span><span lang="de">Beim Start laufen lassen</span></b><span><span lang="en">Run the script as a systemd service so it keeps watching after a reboot.</span><span lang="de">Lass das Skript als systemd-Dienst laufen, damit es nach einem Neustart weiter überwacht.</span></span></li>
-    <li><b><span lang="en">Watch several plants</span><span lang="de">Mehrere Pflanzen überwachen</span></b><span><span lang="en">Repeat the divider on more GPIO pins and loop over a list of sensors.</span><span lang="de">Bau den Spannungsteiler auf weiteren GPIO-Pins nach und gehe in einer Schleife über eine Liste von Sensoren.</span></span></li>
+    <li><b>Log the readings</b><span>Write a timestamp and the reading to a CSV file and plot how fast your plant dries out.</span></li>
+    <li><b>Get a message</b><span>Send a push message or email when the soil has been dry for a few readings in a row.</span></li>
+    <li><b>Measure real values</b><span>Add an analog-to-digital converter such as the MCP3008 to get a percentage instead of wet or dry.</span></li>
+    <li><b>Water automatically</b><span>Drive a small pump through a relay or transistor when the soil is dry.</span></li>
+    <li><b>Start on boot</b><span>Run the script as a systemd service so it keeps watching after a reboot.</span></li>
+    <li><b>Watch several plants</b><span>Repeat the divider on more GPIO pins and loop over a list of sensors.</span></li>
   </ul>
 </section>
 </main>
 
 <footer>
-  <p><span lang="en">Built by <a href="https://github.com/lebor32">Jan (lebor32)</a> and <a href="https://github.com/Nathanyiel">Nate (Nathanyiel)</a> in the programming course during vocational school and apprenticeship. We hope it gives you an idea for your own project.</span><span lang="de">Gebaut von <a href="https://github.com/lebor32">Jan (lebor32)</a> und <a href="https://github.com/Nathanyiel">Nate (Nathanyiel)</a> im Programmierkurs während Berufsschule und Ausbildung. Wir hoffen, es gibt dir eine Idee für dein eigenes Projekt.</span></p>
-  <p><span lang="en">Released under the MIT license.</span><span lang="de">Veröffentlicht unter der MIT-Lizenz.</span> <a href="https://github.com/Nathanyiel/Raspberry-Pi_Moisture_Sensor">GitHub</a></p>
+  <p>Built by <a href="https://github.com/lebor32">Jan (lebor32)</a> and <a href="https://github.com/Nathanyiel">Nate (Nathanyiel)</a> in the programming course during vocational school and apprenticeship. We hope it gives you an idea for your own project.</p>
+  <p>Released under the MIT license. <a href="https://github.com/Nathanyiel/Raspberry-Pi_Moisture_Sensor">GitHub</a></p>
 </footer>
 </div>
 
@@ -504,40 +494,25 @@ cd Raspberry-Pi_Moisture_Sensor</pre><button type="button" class="copy"><span cl
   function $(s, c) { return (c || document).querySelector(s); }
   function $$(s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); }
 
-  /* ---------- language ---------- */
-  var lang = '';
-  try { lang = localStorage.getItem('pi-lang') || ''; } catch (e) {}
-  if (lang !== 'de' && lang !== 'en') lang = (navigator.language || 'en').toLowerCase().indexOf('de') === 0 ? 'de' : 'en';
-  function setLang(l) {
-    lang = l;
-    root.setAttribute('data-lang', l);
-    root.setAttribute('lang', l);
-    try { localStorage.setItem('pi-lang', l); } catch (e) {}
-    $$('[data-setlang]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-setlang') === l ? 'true' : 'false'); });
-  }
-  $$('[data-setlang]').forEach(function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-setlang')); }); });
-  setLang(lang);
-
   /* ---------- simulator ---------- */
   var R_TOP = 20.99, R_PD = 50, VCC = 3.3, VTH = 1.65, MAXE = 2.7;
   var slider = $('#soil'), circ = $('.circ'), gauge = $('#gauge'), fill = $('#gaugeFill');
   var chips = $$('.chip[data-r]');
   var T = {
-    dry: { v: ['Dry. Water me.', 'Trocken. Gieß mich.'], w: ['GPIO 17 reads HIGH, so the LED is on.', 'GPIO 17 liest HIGH, deshalb leuchtet die LED.'] },
-    wet: { v: ['Wet. All good.', 'Feucht. Alles gut.'], w: ['GPIO 17 reads LOW, so the LED stays off.', 'GPIO 17 liest LOW, deshalb bleibt die LED aus.'] }
+    dry: { v: 'Dry. Water me.', w: 'GPIO 17 reads HIGH, so the LED is on.' },
+    wet: { v: 'Wet. All good.', w: 'GPIO 17 reads LOW, so the LED stays off.' }
   };
   function rOf(x) { return Math.pow(10, x / 100 * MAXE); }
   function xOf(r) { return Math.log(r) / Math.LN10 / MAXE * 100; }
   function vOf(r) { var re = 1 / (1 / r + 1 / R_PD); return VCC * re / (re + R_TOP); }
   function fmtR(r) { return (r < 10 ? r.toFixed(1) : Math.round(r)) + ' kΩ'; }
   function fmtV(v) { return v.toFixed(2) + ' V'; }
-  function setPair(el, pair) { var s = el.children; s[0].textContent = pair[0]; s[1].textContent = pair[1]; }
 
   var dry = true, lines = [], count = 2;
   function drawTerm() {
     var html = '';
     lines.forEach(function (isDry) {
-      html += '<div class="l ' + (isDry ? 'no' : 'ok') + '">' + (isDry ? 'Trocken (GPIO_IN HIGH)' : 'Feucht (GPIO_IN LOW)') + '</div>';
+      html += '<div class="l ' + (isDry ? 'no' : 'ok') + '">' + (isDry ? 'Dry (GPIO_IN HIGH)' : 'Wet (GPIO_IN LOW)') + '</div>';
     });
     $('#term').innerHTML = html;
   }
@@ -554,8 +529,8 @@ cd Raspberry-Pi_Moisture_Sensor</pre><button type="button" class="copy"><span cl
     gauge.classList.toggle('is-dry', dry);
     var vd = $('#verdict'); vd.classList.toggle('is-dry', dry);
     var t = dry ? T.dry : T.wet;
-    setPair(vd, t.v); setPair($('#why'), t.w);
-    slider.setAttribute('aria-valuetext', fmtR(r) + ', ' + (dry ? T.dry.v[lang === 'de' ? 1 : 0] : T.wet.v[lang === 'de' ? 1 : 0]));
+    vd.textContent = t.v; $('#why').textContent = t.w;
+    slider.setAttribute('aria-valuetext', fmtR(r) + ', ' + t.v);
   }
   slider.addEventListener('input', function () {
     chips.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });

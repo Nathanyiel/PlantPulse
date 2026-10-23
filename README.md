@@ -6,7 +6,7 @@
 ![Python 3](https://img.shields.io/badge/python-3-1d6ba3.svg)
 ![Raspberry Pi](https://img.shields.io/badge/runs%20on-Raspberry%20Pi-b05e14.svg)
 
-**[Open the interactive guide](https://nathanyiel.github.io/Raspberry-Pi_Moisture_Sensor/)** (simulator, wiring, code walkthrough) · [Deutsche Version](README.de.md)
+**[Open the interactive guide](https://nathanyiel.github.io/Raspberry-Pi_Moisture_Sensor/)** (simulator, wiring, code walkthrough)
 
 ![Circuit diagram: GPIO 4 feeds a resistor chain, the measuring node goes to GPIO 17 and the soil probes, GPIO 27 drives the LED](assets/circuit.svg)
 
@@ -18,7 +18,7 @@ Wet soil conducts electricity, dry soil hardly does. The Pi turns that into a ye
 
 1. **Pulse.** GPIO 4 goes HIGH for 10 ms and powers the divider. The rest of the time no current flows through the probes, which slows corrosion.
 2. **Read.** GPIO 17 reads the node between the resistors and the soil. Wet soil pulls it down to LOW. Dry soil lets it stay HIGH.
-3. **React.** Dry: the LED lights up and the console prints `Trocken`. Wet: the LED stays off and the console prints `Feucht`. Then the Pi waits two seconds and starts again.
+3. **React.** Dry: the LED lights up and the console prints `Dry`. Wet: the LED stays off and the console prints `Wet`. Then the Pi waits two seconds and starts again.
 
 ## What you need
 
@@ -69,9 +69,9 @@ On a **Raspberry Pi 5** install `python3-rpi-lgpio` instead of `python3-rpi.gpio
 Example output:
 
 ```
-Feucht (GPIO_IN LOW)
-Feucht (GPIO_IN LOW)
-Trocken (GPIO_IN HIGH)
+Wet (GPIO_IN LOW)
+Wet (GPIO_IN LOW)
+Dry (GPIO_IN HIGH)
 ```
 
 ## The code in short
@@ -88,8 +88,8 @@ The script is [`feuchtigkeits_sensor.py`](feuchtigkeits_sensor.py), about 30 lin
 | Problem | What to check |
 | --- | --- |
 | `RuntimeError` about the Raspberry Pi or a missing `RPi` module | The script only runs on a Raspberry Pi with the GPIO library installed. |
-| Always prints `Trocken` | Both probes in the soil? GND connected? Probes not too far apart? |
-| Always prints `Feucht` | Probes touching each other? Is the resistor chain connected to GPIO 4? |
+| Always prints `Dry` | Both probes in the soil? GND connected? Probes not too far apart? |
+| Always prints `Wet` | Probes touching each other? Is the resistor chain connected to GPIO 4? |
 | LED never lights up | LED direction (long leg toward GPIO 27), and the 330 Ω resistor in the LED branch. |
 
 ## Take it further
