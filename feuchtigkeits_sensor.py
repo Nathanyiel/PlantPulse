@@ -16,7 +16,7 @@ def measure_once(pulse_ms=10):
     # Versorgung kurz einschalten
     GPIO.output(GPIO_OUT, GPIO.HIGH)
     time.sleep(pulse_ms/1000.0)      # z.B. 10 ms
-    val = GPIO.input(GPIO_IN)        # 0 = LOW (wahrscheinlich feucht), 1 = HIGH (trocken)
+    val = GPIO.input(GPIO_IN)        # 0 = LOW (feucht), 1 = HIGH (trocken)
     GPIO.output(GPIO_OUT, GPIO.LOW)
     return val
 
@@ -25,10 +25,11 @@ try:
         v = measure_once(10)   # 10 ms Pulse
         if v == 0:
             # LOW -> feucht (Probe zieht Knoten Richtung GND)
-            GPIO.output(GPIO_LED, GPIO.LOW)   # LED an (oder invertieren je nach Schaltung)
+            GPIO.output(GPIO_LED, GPIO.LOW)   # LED aus
             print("Feucht (GPIO_IN LOW)")
         else:
-            GPIO.output(GPIO_LED, GPIO.HIGH)
+            # HIGH -> trocken: LED an als Warnung
+            GPIO.output(GPIO_LED, GPIO.HIGH)  # LED an
             print("Trocken (GPIO_IN HIGH)")
         time.sleep(2.0)   # Messintervall 2s (anpassbar)
 finally:
