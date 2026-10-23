@@ -12,6 +12,8 @@
 
 This project came out of the programming course during our vocational school and apprenticeship. It is small on purpose, so you can understand every part and build on it.
 
+**Status:** finished school project, no longer maintained. Feel free to fork it and make it your own.
+
 ## Try it: how does the circuit react?
 
 Wet soil conducts electricity, dry soil hardly does. The soil is one half of a voltage divider, so its resistance decides the voltage at GPIO 17. Below about 1.65 V the pin reads LOW (wet), above it HIGH (dry).
@@ -75,7 +77,7 @@ flowchart LR
 | 13 | GPIO 27 | LED | 330 Ω, then the LED's long leg. The short leg goes to GND. |
 | 6, 9, … | GND | Return path | Second soil probe and the LED's short leg |
 
-The **measuring node** is the point where the resistor chain, GPIO 17 and the first soil probe meet. The original schematic is still in the repository: [Feuchtigkeitssensor_Schaltplan.drawio.png](Feuchtigkeitssensor_Schaltplan.drawio.png).
+The **measuring node** is the point where the resistor chain, GPIO 17 and the first soil probe meet. The original schematic is still in the repository: [assets/schematic.drawio.png](assets/schematic.drawio.png).
 
 <details>
 <summary><b>Why these resistors?</b></summary>
@@ -102,7 +104,7 @@ git clone https://github.com/Nathanyiel/Raspberry-Pi_Moisture_Sensor.git
 cd Raspberry-Pi_Moisture_Sensor
 
 # 3. Start the sensor, stop it with Ctrl+C
-python3 feuchtigkeits_sensor.py
+python3 moisture_sensor.py
 ```
 
 On a **Raspberry Pi 5** install `python3-rpi-lgpio` instead of `python3-rpi.gpio`. It is a drop-in replacement, so the script stays the same.
@@ -120,7 +122,7 @@ Dry (GPIO_IN HIGH)
 
 <br>
 
-The script is [`feuchtigkeits_sensor.py`](feuchtigkeits_sensor.py), about 30 lines.
+The script is [`moisture_sensor.py`](moisture_sensor.py), about 30 lines.
 
 ```python
 import RPi.GPIO as GPIO
@@ -198,4 +200,4 @@ finally:
 
 ## Credits
 
-Built by [Jan (lebor32)](https://github.com/lebor32) and [Nate (Nathanyiel)](https://github.com/Nathanyiel). Released under the [MIT license](LICENSE).
+Built by [@lebor32](https://github.com/lebor32) and [@Nathanyiel](https://github.com/Nathanyiel). Released under the [MIT license](LICENSE).
