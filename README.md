@@ -66,7 +66,7 @@ flowchart LR
 | 13 | GPIO 27 | LED | 330 Ω, then the LED's long leg. The short leg goes to GND. |
 | 6, 9, … | GND | Return path | Second soil probe and the LED's short leg |
 
-The **measuring node** is the point where the resistor chain, GPIO 17 and the first soil probe meet. The original schematic is still in the repository: [assets/schematic.drawio.png](assets/schematic.drawio.png).
+The **measuring node** is the point where the resistor chain, GPIO 17 and the first soil probe meet. The original drawing is still in the repository: [assets/schematic.drawio.png](assets/schematic.drawio.png). It labels the ground connection “Pin 7”, but any GND pin works, for example 6 or 9.
 
 <details>
 <summary><b>Why these resistors?</b></summary>
