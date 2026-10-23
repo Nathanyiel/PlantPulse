@@ -6,15 +6,49 @@
 ![Python 3](https://img.shields.io/badge/python-3-1d6ba3.svg)
 ![Raspberry Pi](https://img.shields.io/badge/runs%20on-Raspberry%20Pi-b05e14.svg)
 
-**[Open the interactive guide](https://nathanyiel.github.io/Raspberry-Pi_Moisture_Sensor/)** (simulator, wiring, code walkthrough)
+![Circuit diagram with dry soil: the measuring node is high, so GPIO 17 reads HIGH and the LED is on](assets/circuit-dry.svg)
 
-![Circuit diagram: GPIO 4 feeds a resistor chain, the measuring node goes to GPIO 17 and the soil probes, GPIO 27 drives the LED](assets/circuit.svg)
+*The circuit with dry soil: the node stays high, GPIO 17 reads HIGH and the LED lights up.*
 
 This project came out of the programming course during our vocational school and apprenticeship. It is small on purpose, so you can understand every part and build on it.
 
+## Try it: how does the circuit react?
+
+Wet soil conducts electricity, dry soil hardly does. The soil is one half of a voltage divider, so its resistance decides the voltage at GPIO 17. Below about 1.65 V the pin reads LOW (wet), above it HIGH (dry).
+
+| Soil | Resistance | Voltage at GPIO 17 | GPIO 17 reads | LED | Console |
+| --- | ---: | ---: | :---: | :---: | --- |
+| Glass of water | 2 kΩ | 0.28 V | LOW | off | `Wet (GPIO_IN LOW)` |
+| Wet soil | 15 kΩ | 1.17 V | LOW | off | `Wet (GPIO_IN LOW)` |
+| Almost dry | 33 kΩ | 1.61 V | LOW | off | `Wet (GPIO_IN LOW)` |
+| **Switching point** | **about 36 kΩ** | **1.65 V** | | | |
+| Dry soil | 120 kΩ | 2.07 V | HIGH | **on** | `Dry (GPIO_IN HIGH)` |
+| Air | 500 kΩ | 2.26 V | HIGH | **on** | `Dry (GPIO_IN HIGH)` |
+
+*Calculated with example resistances. Real soil varies with moisture, minerals and probe distance, and the switching point of a real input varies a little from Pi to Pi.*
+
+<details>
+<summary><b>Show the circuit with wet soil</b></summary>
+
+<br>
+
+![Circuit diagram with wet soil: the soil pulls the measuring node low, so GPIO 17 reads LOW and the LED stays off](assets/circuit-wet.svg)
+
+The probes conduct well and pull the measuring node down to about 1.2 V. GPIO 17 reads LOW, the LED stays off and the console prints `Wet (GPIO_IN LOW)`.
+
+</details>
+
 ## How it works
 
-Wet soil conducts electricity, dry soil hardly does. The Pi turns that into a yes or no with a voltage divider and one digital input. No extra chip is needed.
+```mermaid
+flowchart LR
+    A["Pulse<br>GPIO 4 HIGH for 10 ms"] --> B["Read<br>GPIO 17"]
+    B -->|LOW| C["Wet<br>LED off"]
+    B -->|HIGH| D["Dry<br>LED on"]
+    C --> E["Wait 2 s"]
+    D --> E
+    E --> A
+```
 
 1. **Pulse.** GPIO 4 goes HIGH for 10 ms and powers the divider. The rest of the time no current flows through the probes, which slows corrosion.
 2. **Read.** GPIO 17 reads the node between the resistors and the soil. Wet soil pulls it down to LOW. Dry soil lets it stay HIGH.
@@ -41,15 +75,22 @@ Wet soil conducts electricity, dry soil hardly does. The Pi turns that into a ye
 | 13 | GPIO 27 | LED | 330 Ω, then the LED's long leg. The short leg goes to GND. |
 | 6, 9, … | GND | Return path | Second soil probe and the LED's short leg |
 
-The **measuring node** is the point where the resistor chain, GPIO 17 and the first soil probe meet.
+The **measuring node** is the point where the resistor chain, GPIO 17 and the first soil probe meet. The original schematic is still in the repository: [Feuchtigkeitssensor_Schaltplan.drawio.png](Feuchtigkeitssensor_Schaltplan.drawio.png).
 
-The resistor chain adds up to about 21 kΩ and forms the upper half of a voltage divider. The soil is the lower half. Together with the Pi's internal pull-down (about 50 kΩ), GPIO 17 flips from LOW to HIGH when the soil is around 36 kΩ. This is an estimate, because the switching point of a real input varies a little.
+<details>
+<summary><b>Why these resistors?</b></summary>
 
-The original schematic is still in the repository: [Feuchtigkeitssensor_Schaltplan.drawio.png](Feuchtigkeitssensor_Schaltplan.drawio.png).
+<br>
+
+The chain adds up to R<sub>top</sub> = 3 × 330 Ω + 2 × 10 kΩ ≈ 21 kΩ and forms the upper half of the voltage divider. The soil is the lower half, with the Pi's internal pull-down (about 50 kΩ) in parallel. With that, GPIO 17 flips from LOW to HIGH when the soil is around 36 kΩ.
+
+If nothing lights up, check the LED direction first. The long leg points toward the resistor and GPIO 27. Always keep the 330 Ω resistor in the LED branch, or the LED draws too much current from the pin.
+
+</details>
 
 ## Run it
 
-Do this on the Raspberry Pi. On Windows or macOS you can edit the script, but the GPIO library only runs on a Pi. The [interactive guide](https://nathanyiel.github.io/Raspberry-Pi_Moisture_Sensor/) lets you try the logic anywhere.
+Do this on the Raspberry Pi. On Windows or macOS you can edit the script, but the GPIO library only runs on a Pi.
 
 ```bash
 # 1. GPIO library (Raspberry Pi OS usually has it already)
@@ -74,16 +115,63 @@ Wet (GPIO_IN LOW)
 Dry (GPIO_IN HIGH)
 ```
 
-## The code in short
+<details>
+<summary><b>The code, piece by piece</b></summary>
+
+<br>
 
 The script is [`feuchtigkeits_sensor.py`](feuchtigkeits_sensor.py), about 30 lines.
 
-- `GPIO_OUT = 4`, `GPIO_IN = 17`, `GPIO_LED = 27` use BCM numbering, so these are GPIO numbers and not physical pin numbers.
-- `measure_once()` switches the divider on, waits 10 ms, reads GPIO 17, switches the divider off and returns `0` (wet) or `1` (dry).
-- The main loop calls `measure_once()`, sets the LED, prints a line and sleeps for two seconds. The interval is easy to change in the last `time.sleep(2.0)`.
-- `GPIO.cleanup()` runs when you press Ctrl+C and resets the pins.
+```python
+import RPi.GPIO as GPIO
+import time
 
-## Troubleshooting
+GPIO.setmode(GPIO.BCM)
+
+GPIO_OUT = 4    # Supplies the voltage divider briefly
+GPIO_IN  = 17   # Reads the measuring node
+GPIO_LED = 27   # LED indicator
+
+# Setup
+GPIO.setup(GPIO_OUT, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(GPIO_IN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(GPIO_LED, GPIO.OUT, initial=GPIO.LOW)
+
+def measure_once(pulse_ms=10):
+    GPIO.output(GPIO_OUT, GPIO.HIGH)
+    time.sleep(pulse_ms/1000.0)
+    val = GPIO.input(GPIO_IN)        # 0 = LOW (wet), 1 = HIGH (dry)
+    GPIO.output(GPIO_OUT, GPIO.LOW)
+    return val
+
+try:
+    while True:
+        v = measure_once(10)
+        if v == 0:
+            GPIO.output(GPIO_LED, GPIO.LOW)
+            print("Wet (GPIO_IN LOW)")
+        else:
+            GPIO.output(GPIO_LED, GPIO.HIGH)
+            print("Dry (GPIO_IN HIGH)")
+        time.sleep(2.0)
+finally:
+    GPIO.cleanup()
+```
+
+| Part | What it does |
+| --- | --- |
+| Pins | BCM numbering, so these are GPIO numbers and not physical pin numbers. GPIO 4 sends the supply pulse, GPIO 17 reads the node, GPIO 27 drives the LED. |
+| Setup | GPIO 4 and 27 are outputs and start LOW. GPIO 17 is an input with an internal pull-down, so it reads LOW unless the divider pushes it high. |
+| `measure_once()` | Switches the divider on, waits 10 ms, reads GPIO 17, switches the divider off and returns `0` (wet) or `1` (dry). |
+| Main loop | Measures, sets the LED, prints a line and sleeps two seconds. Change the interval in the last `time.sleep(2.0)`. |
+| `GPIO.cleanup()` | Runs when you press Ctrl+C and resets the pins. |
+
+</details>
+
+<details>
+<summary><b>Troubleshooting</b></summary>
+
+<br>
 
 | Problem | What to check |
 | --- | --- |
@@ -92,7 +180,12 @@ The script is [`feuchtigkeits_sensor.py`](feuchtigkeits_sensor.py), about 30 lin
 | Always prints `Wet` | Probes touching each other? Is the resistor chain connected to GPIO 4? |
 | LED never lights up | LED direction (long leg toward GPIO 27), and the 330 Ω resistor in the LED branch. |
 
-## Take it further
+</details>
+
+<details>
+<summary><b>Take it further</b></summary>
+
+<br>
 
 - Log the readings with a timestamp to a CSV file and plot how fast your plant dries out.
 - Send a push message or email when the soil has been dry several readings in a row.
@@ -100,6 +193,8 @@ The script is [`feuchtigkeits_sensor.py`](feuchtigkeits_sensor.py), about 30 lin
 - Drive a small pump through a relay or transistor to water automatically.
 - Run the script as a systemd service so it starts on boot.
 - Repeat the divider on more GPIO pins to watch several plants.
+
+</details>
 
 ## Credits
 
