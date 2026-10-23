@@ -6,11 +6,13 @@
 ![Python 3](https://img.shields.io/badge/python-3-1d6ba3.svg)
 ![Raspberry Pi](https://img.shields.io/badge/runs%20on-Raspberry%20Pi-b05e14.svg)
 
-![Circuit diagram with dry soil: the measuring node is high, so GPIO 17 reads HIGH and the LED is on](assets/circuit-dry.svg)
+![Animated circuit diagram: the soil alternates between wet and dry, the node voltage changes, GPIO 17 flips and the LED switches on and off](assets/circuit-animated.svg)
 
-*The circuit with dry soil: the node stays high, GPIO 17 reads HIGH and the LED lights up.*
+*The circuit alternates between wet and dry soil: the node voltage changes, GPIO 17 flips and the LED switches.*
 
 This project came out of the programming course during our vocational school and apprenticeship. It is small on purpose, so you can understand every part and build on it.
+
+**Status:** finished school project, no longer maintained. Feel free to fork it and make it your own.
 
 ## Try it: how does the circuit react?
 
@@ -26,17 +28,6 @@ Wet soil conducts electricity, dry soil hardly does. The soil is one half of a v
 | Air | 500 kΩ | 2.26 V | HIGH | **on** | `Dry (GPIO_IN HIGH)` |
 
 *Calculated with example resistances. Real soil varies with moisture, minerals and probe distance, and the switching point of a real input varies a little from Pi to Pi.*
-
-<details>
-<summary><b>Show the circuit with wet soil</b></summary>
-
-<br>
-
-![Circuit diagram with wet soil: the soil pulls the measuring node low, so GPIO 17 reads LOW and the LED stays off](assets/circuit-wet.svg)
-
-The probes conduct well and pull the measuring node down to about 1.2 V. GPIO 17 reads LOW, the LED stays off and the console prints `Wet (GPIO_IN LOW)`.
-
-</details>
 
 ## How it works
 
@@ -75,7 +66,7 @@ flowchart LR
 | 13 | GPIO 27 | LED | 330 Ω, then the LED's long leg. The short leg goes to GND. |
 | 6, 9, … | GND | Return path | Second soil probe and the LED's short leg |
 
-The **measuring node** is the point where the resistor chain, GPIO 17 and the first soil probe meet. The original schematic is still in the repository: [Feuchtigkeitssensor_Schaltplan.drawio.png](Feuchtigkeitssensor_Schaltplan.drawio.png).
+The **measuring node** is the point where the resistor chain, GPIO 17 and the first soil probe meet. The original schematic is still in the repository: [assets/schematic.drawio.png](assets/schematic.drawio.png).
 
 <details>
 <summary><b>Why these resistors?</b></summary>
@@ -102,7 +93,7 @@ git clone https://github.com/Nathanyiel/Raspberry-Pi_Moisture_Sensor.git
 cd Raspberry-Pi_Moisture_Sensor
 
 # 3. Start the sensor, stop it with Ctrl+C
-python3 feuchtigkeits_sensor.py
+python3 moisture_sensor.py
 ```
 
 On a **Raspberry Pi 5** install `python3-rpi-lgpio` instead of `python3-rpi.gpio`. It is a drop-in replacement, so the script stays the same.
@@ -120,7 +111,7 @@ Dry (GPIO_IN HIGH)
 
 <br>
 
-The script is [`feuchtigkeits_sensor.py`](feuchtigkeits_sensor.py), about 30 lines.
+The script is [`moisture_sensor.py`](moisture_sensor.py), about 30 lines.
 
 ```python
 import RPi.GPIO as GPIO
@@ -198,4 +189,4 @@ finally:
 
 ## Credits
 
-Built by [Jan (lebor32)](https://github.com/lebor32) and [Nate (Nathanyiel)](https://github.com/Nathanyiel). Released under the [MIT license](LICENSE).
+Built by [@lebor32](https://github.com/lebor32) and [@Nathanyiel](https://github.com/Nathanyiel). Released under the [MIT license](LICENSE).
