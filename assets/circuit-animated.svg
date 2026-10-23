@@ -1,7 +1,7 @@
 <svg viewBox="0 0 600 320" width="600" height="320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Circuit diagram. GPIO 4 feeds a chain of three 330 ohm and two 10 kilohm resistors. Their end is the measuring node, which connects to GPIO 17 and to the soil probes. The probes return to ground. GPIO 27 drives an LED through a 330 ohm resistor.">
 <style>
   svg { --paper:#F1F4EE; --surface:#FFFFFF; --ink:#17211B; --muted:#576A5E; --line:#D3DCD0;
-        --wet:#1D6BA3; --dry:#B05E14; --led:#E39B0B; --nodec:var(--wet); --soilc:var(--wet); }
+        --wet:#1D6BA3; --dry:#B05E14; --led:#E39B0B; --nodec:var(--dry); --soilc:var(--dry); }
   @media (prefers-color-scheme: dark) {
     svg { --paper:#0E1511; --surface:#16201A; --ink:#E3ECE4; --muted:#92A598; --line:#28382E;
           --wet:#5DB1EE; --dry:#E39650; --led:#FFC247; }
@@ -16,8 +16,29 @@
   .t { font: 500 12px system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--ink); }
   .t.m { fill: var(--muted); }
   .t.b { font-weight: 700; }
-  .glow { fill: var(--led); opacity: 0; }
-  .ledfill { fill: var(--surface); stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
+  .glow { fill: var(--led); opacity: .35; }
+  .ledfill { fill: var(--led); stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
+
+  .big { font-size: 16px; }
+  .v-wet { opacity: 0; }
+  .pulse { fill: var(--wet); opacity: 0; }
+  @keyframes strokeCycle { 0%, 42% { stroke: var(--wet); } 50%, 92% { stroke: var(--dry); } 100% { stroke: var(--wet); } }
+  @keyframes fillCycle { 0%, 42% { fill: var(--wet); } 50%, 92% { fill: var(--dry); } 100% { fill: var(--wet); } }
+  @keyframes ledCycle { 0%, 42% { fill: var(--surface); } 50%, 92% { fill: var(--led); } 100% { fill: var(--surface); } }
+  @keyframes glowCycle { 0%, 42% { opacity: 0; } 50%, 92% { opacity: .35; } 100% { opacity: 0; } }
+  @keyframes showWet { 0%, 42% { opacity: 1; } 50%, 92% { opacity: 0; } 100% { opacity: 1; } }
+  @keyframes showDry { 0%, 42% { opacity: 0; } 50%, 92% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes pulseRun { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(314px); opacity: 0; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .wire.node { animation: strokeCycle 8s ease-in-out infinite; }
+    .node-fill { animation: fillCycle 8s ease-in-out infinite; }
+    .soil { animation: strokeCycle 8s ease-in-out infinite, fillCycle 8s ease-in-out infinite; }
+    .ledfill { animation: ledCycle 8s ease-in-out infinite; }
+    .glow { animation: glowCycle 8s ease-in-out infinite; }
+    .v-wet { animation: showWet 8s ease-in-out infinite; }
+    .v-dry { animation: showDry 8s ease-in-out infinite; }
+    .pulse { animation: pulseRun 2s linear infinite; }
+  }
 </style>
 <rect class="bg" x="0.5" y="0.5" width="599" height="319" rx="12"/>
   <!-- Raspberry Pi -->
@@ -30,6 +51,7 @@
 
   <!-- supply pulse through the resistor chain -->
   <line x1="156" y1="76" x2="200" y2="76" class="wire"/>
+  <circle class="pulse" cx="156" cy="76" r="4"/>
   <rect x="200" y="62" width="190" height="28" rx="4" class="part"/>
   <text x="295" y="80" text-anchor="middle" class="t">3 × 330 Ω + 2 × 10 kΩ</text>
   <line x1="390" y1="76" x2="470" y2="76" class="wire node"/>
@@ -40,7 +62,8 @@
   <line x1="156" y1="160" x2="470" y2="160" class="wire node"/>
   <circle cx="470" cy="160" r="4.5" class="dot node-fill"/>
   <text x="300" y="150" text-anchor="middle" class="t m">measuring node</text>
-  <text x="482" y="150" class="t b" id="nodeV">1.17 V</text>
+  <text x="482" y="150" class="t b v-dry">2.07 V</text>
+  <text x="482" y="150" class="t b v-wet">1.17 V</text>
 
   <!-- soil probes -->
   <rect x="458" y="196" width="24" height="60" rx="4" class="soil"/>
@@ -64,4 +87,11 @@
   <line x1="326" y1="236" x2="350" y2="236" class="wire"/>
   <line x1="350" y1="236" x2="350" y2="280" class="wire"/>
   <text x="310" y="204" text-anchor="middle" class="t m">LED</text>
+
+  <text x="494" y="254" class="t m v-dry">120 kΩ</text>
+  <text x="494" y="254" class="t m v-wet">15 kΩ</text>
+  <text x="588" y="32" text-anchor="end" class="t b big v-dry">Dry soil</text>
+  <text x="588" y="32" text-anchor="end" class="t b big v-wet">Wet soil</text>
+  <text x="588" y="308" text-anchor="end" class="t b v-dry">GPIO 17 HIGH · LED on</text>
+  <text x="588" y="308" text-anchor="end" class="t b v-wet">GPIO 17 LOW · LED off</text>
 </svg>

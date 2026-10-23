@@ -6,9 +6,9 @@
 ![Python 3](https://img.shields.io/badge/python-3-1d6ba3.svg)
 ![Raspberry Pi](https://img.shields.io/badge/runs%20on-Raspberry%20Pi-b05e14.svg)
 
-![Circuit diagram with dry soil: the measuring node is high, so GPIO 17 reads HIGH and the LED is on](assets/circuit-dry.svg)
+![Animated circuit diagram: the soil alternates between wet and dry, the node voltage changes, GPIO 17 flips and the LED switches on and off](assets/circuit-animated.svg)
 
-*The circuit with dry soil: the node stays high, GPIO 17 reads HIGH and the LED lights up.*
+*The circuit alternates between wet and dry soil: the node voltage changes, GPIO 17 flips and the LED switches.*
 
 This project came out of the programming course during our vocational school and apprenticeship. It is small on purpose, so you can understand every part and build on it.
 
@@ -28,17 +28,6 @@ Wet soil conducts electricity, dry soil hardly does. The soil is one half of a v
 | Air | 500 kΩ | 2.26 V | HIGH | **on** | `Dry (GPIO_IN HIGH)` |
 
 *Calculated with example resistances. Real soil varies with moisture, minerals and probe distance, and the switching point of a real input varies a little from Pi to Pi.*
-
-<details>
-<summary><b>Show the circuit with wet soil</b></summary>
-
-<br>
-
-![Circuit diagram with wet soil: the soil pulls the measuring node low, so GPIO 17 reads LOW and the LED stays off](assets/circuit-wet.svg)
-
-The probes conduct well and pull the measuring node down to about 1.2 V. GPIO 17 reads LOW, the LED stays off and the console prints `Wet (GPIO_IN LOW)`.
-
-</details>
 
 ## How it works
 
